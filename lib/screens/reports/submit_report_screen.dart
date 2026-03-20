@@ -221,8 +221,9 @@ class _SubmitReportScreenState extends State<SubmitReportScreen> {
 
     setState(() => _isLoading = true);
     try {
-      final token   = await ApiService.getToken();
-      final uri     = Uri.parse('${ApiConstants.baseUrl}/reports');
+     final token = await ApiService.getToken();
+
+final uri = Uri.parse('${ApiConstants.baseUrl}/reports');
       final request = http.MultipartRequest('POST', uri);
       request.headers['Accept']        = 'application/json';
       request.headers['Authorization'] = 'Bearer $token';
@@ -248,7 +249,8 @@ class _SubmitReportScreenState extends State<SubmitReportScreen> {
 
       final streamed = await request.send().timeout(const Duration(seconds: 60));
       final response = await http.Response.fromStream(streamed);
-      final data     = jsonDecode(response.body);
+      
+final data = jsonDecode(response.body);
 
       if (response.statusCode == 201) {
         setState(() => _isLoading = false);
