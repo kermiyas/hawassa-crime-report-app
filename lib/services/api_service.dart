@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/api_constants.dart';
+import 'dart:async';
 
 class ApiService {
   static Future<void> saveToken(String token) async {
@@ -28,7 +29,7 @@ class ApiService {
         'Accept': 'application/json',
       },
       body: jsonEncode(body),
-    ).timeout(const Duration(seconds: 60));
+    ).timeout(const Duration(seconds: 5));
     return response;
   }
 
@@ -72,4 +73,14 @@ class ApiService {
     ).timeout(const Duration(seconds: 60));
     return response;
   }
+  static Future<http.Response> deleteWithAuth(String path) async {
+  final token = await getToken();
+  return http.delete(
+    Uri.parse('${ApiConstants.baseUrl}$path'),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    },
+  );
+}
 }
